@@ -33,7 +33,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
     })
   };
 
-  const rejectCredential: SubmitHandler<FormData> = (values: FormData) => {
+  const rejectCredential = () => {
     manageCredential({
       id,
       action: 'reject',

@@ -18,7 +18,7 @@ export default {
       throw e?.message;
     }
   },
-  manageCredential: async ({id, action, identifiable_data}: { id: string, action: 'approve' | 'reject', identifiable_data: IdentifiableData}) => {
+  manageCredential: async ({id, action, identifiable_data}: { id: string, action: 'approve' | 'reject', identifiable_data?: IdentifiableData}) => {
     try {
       const response = await axios.post(
         `/requests/${id}/action`,
