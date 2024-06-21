@@ -5,6 +5,7 @@ import {useState} from "react";
 import {useCredentialsQuery} from "@/hooks/queries/credentials";
 import {CredentialStatus, RequestCredential} from "@/@types/credential";
 import {CredentialForm} from "@/app/credenciales/components/CredentialForm";
+import Image from "next/image";
 
 const STATUSES = {
   [CredentialStatus.pending] : 'Pending',
@@ -32,7 +33,7 @@ export default function CredentialsForm() {
         <Typography variant="h6">
           Status: {STATUSES[status]}
         </Typography>
-        {/*<Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="document" className="my-4"/>*/}
+        <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Document image" className="my-4"/>
         <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />
       </AccordionDetails>
     </Accordion>
