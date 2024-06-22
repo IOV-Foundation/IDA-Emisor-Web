@@ -19,22 +19,44 @@ export default function Home() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="bg-white min-h-screen">
-        <header className="z-10 h-[73px]">
-          <div className="fixed left-0 top-0 w-full flex justify-center border-b border-gray-300 bg-white z-50">
-            <Image
-              src="/images/logo-iovf.png"
-              alt="Vercel Logo"
-              width={128}
-              height={72}
-              priority
-            />
+      <div className="flex flex-col min-h-screen">
+        <main className="flex-grow bg-gray-50 flex flex-col items-center">
+        <header className="w-full bg-[#BB2929] shadow-md top-0 left-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-center py-4">
+              <Image
+                src="/images/logo-demo.png"
+                alt="IDA Demo - Portal Gobierno"
+                width={100}
+                height={56}
+                priority
+              />
+              <div className="border-l-4 border-[#FFFFFF] pl-3 ml-3">
+                <h1 className="text-2xl font-bold text-[#FFFFFF]">DEMO - Portal de Gobierno</h1>
+                <h2 className="text-xl text-[#FFFFFF]">Gestión de Licencias de Conducir</h2>
+              </div>
+            </div>
           </div>
         </header>
-        <div className="w-full mt-10 px-3">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <h2 className="text-xl font-semibold text-gray-700 mt-4 mb-6">Listado de Licencias de Conducir pendientes de revisar</h2>
           <CredentialsForm />
         </div>
+
       </main>
+      <footer className="w-full bg-gray-500 text-white py-4 flex justify-center items-center">
+        <p className="text-sm font-bold" style={{ fontFamily: 'Roboto, sans-serif' }}>Powered By</p>
+        <div className="ml-2">
+          <Image
+            src="/images/logo-iovf-white.png"
+            alt="IOVF Logo"
+            width={100}
+            height={56}
+            priority
+          />
+        </div>
+      </footer>
+    </div>
     </QueryClientProvider>
   );
 }
