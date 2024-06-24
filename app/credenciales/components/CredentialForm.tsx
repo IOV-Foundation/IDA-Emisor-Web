@@ -48,7 +48,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Nombre de Pila"
+                label="Nombre"
                 {...register(`${id}_firstName`)}
                 error={!!errors[`${id}_firstName`]}
                 helperText={errors[`${id}_firstName`] ? 'Este campo es obligatorio' : ''}
@@ -64,11 +64,11 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
               />
             </Grid>
           </Grid>
-          <Button variant="contained" className="!my-3 w-full" type="submit">Entregar</Button>
+          <Button variant="contained" className="!my-3 w-full" type="submit">Aprobar</Button>
         </Box>
       )}
-      {!showForm && !isPending &&<Button variant="contained" className="!mb-3" onClick={() => setShowForm(true)}>Ok</Button>}
-      {!isPending && <Button variant="contained" className="!bg-red-500 hover:bg-red-500" onClick={rejectCredential}>Rechazar</Button>}
+      {!showForm && !isPending &&<Button variant="contained" className="!mb-3 !bg-green-700" onClick={() => setShowForm(true)}>Aprobar</Button>}
+      {!isPending && <Button variant="contained" className="!bg-orange-700 hover:bg-grey-700" onClick={rejectCredential}>Rechazar</Button>}
       {isPending && <CircularProgress sx={{margin: '0 auto'}} />}
     </>
   );

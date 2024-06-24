@@ -8,9 +8,9 @@ import {CredentialForm} from "@/app/credenciales/components/CredentialForm";
 import Image from "next/image";
 
 const STATUSES = {
-  [CredentialStatus.pending] : 'Pending',
-  [CredentialStatus.approved] : 'Approved',
-  [CredentialStatus.rejected] : 'Rejected',
+  [CredentialStatus.pending] : 'Pendiente',
+  [CredentialStatus.approved] : 'Aprobada',
+  [CredentialStatus.rejected] : 'Rechazada',
 }
 
 export default function CredentialsForm() {
@@ -24,16 +24,13 @@ export default function CredentialsForm() {
         aria-controls="panel2-content"
         id="panel2-header"
       >
-        <Typography>Solicitud {index + 1}</Typography>
+        <Typography>Solicitud de Credencial  #{index + 1}</Typography>
       </AccordionSummary>
       <AccordionDetails className="flex flex-col max-w-xl">
-        <Typography variant="h5">
-          Detalle de la Solicitud
-        </Typography>
         <Typography variant="h6">
-          Status: {STATUSES[status]}
+          Estado: {STATUSES[status]}
         </Typography>
-        <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Document image" className="my-4"/>
+        <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4"/>
         <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />
       </AccordionDetails>
     </Accordion>
