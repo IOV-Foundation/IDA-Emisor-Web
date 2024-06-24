@@ -2,7 +2,7 @@
 import {useState} from "react";
 import Image from "next/image";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import CredentialsForm from "@/app/credenciales/page";
+import CredentialsForm from "@/app/credenciales/components/CredentialsList";
 
 export default function Home() {
   const [queryClient] = useState(

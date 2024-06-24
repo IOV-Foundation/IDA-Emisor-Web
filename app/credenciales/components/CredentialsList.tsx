@@ -13,7 +13,7 @@ const STATUSES = {
   [CredentialStatus.rejected] : 'Rechazada',
 }
 
-export default function CredentialsForm() {
+export default function CredentialsList() {
   const { credentials } = useCredentialsQuery();
   const [showForm, setShowForm] = useState(false);
 
