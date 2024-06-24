@@ -28,7 +28,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
       identifiable_data: {
         name: values[`${id}_firstName`],
         lastname: values[`${id}_lastName`],
-        category: schemaId,
+        category: values[`${id}_licenseCategory`],
       }
     })
   };
@@ -61,6 +61,15 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
                 {...register(`${id}_lastName`)}
                 error={!!errors[`${id}_lastName`]}
                 helperText={errors[`${id}_lastName`] ? 'Este campo es obligatorio' : ''}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Categoría"
+                {...register(`${id}_licenseCategory`)}
+                error={!!errors[`${id}_licenseCategory`]}
+                helperText={errors[`${id}_licenseCategory`] ? 'Este campo es obligatorio' : ''}
               />
             </Grid>
           </Grid>
