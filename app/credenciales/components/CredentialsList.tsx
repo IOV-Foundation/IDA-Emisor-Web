@@ -48,7 +48,7 @@ export default function CredentialsList() {
           <MenuItem value={CredentialStatus.rejected}>{STATUSES[CredentialStatus.rejected]}</MenuItem>
         </Select>
       </FormControl>
-      {credentials.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
+      {credentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
       {credentials?.map(({ id, status, document_url, schema_id }: RequestCredential, index: number) => (
         <Accordion className="mb-3" key={id}>
           <AccordionSummary
