@@ -1,4 +1,5 @@
 import axios from './axios';
+import {CredentialStatus} from "@/@types/credential";
 
 type IdentifiableData = {
   name: string,
@@ -7,10 +8,15 @@ type IdentifiableData = {
 }
 
 export default {
-  getCredentials: async () => {
+  getCredentials: async (status: CredentialStatus) => {
     try {
       const response = await axios.get(
-        '/requests?status=pending',
+        '/requests',
+        {
+          params: {
+            status
+          }
+        }
       );
       return response?.data?.data;
     } catch (e: unknown) {
