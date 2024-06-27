@@ -27,7 +27,7 @@ export default {
           identifiable_data
         }
       );
-      return response?.data?.data;
+      return response?.data;
     } catch (e: unknown) {
       // @ts-ignore
       throw e?.message;
