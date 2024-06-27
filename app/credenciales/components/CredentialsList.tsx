@@ -63,7 +63,7 @@ export default function CredentialsList() {
               Estado: {STATUSES[status]}
             </Typography>
             <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4" />
-            <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />
+            {status === CredentialStatus.pending && <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />}
           </AccordionDetails>
         </Accordion>
       ))}

@@ -1,10 +1,12 @@
 import axios from './axios';
 import {CredentialStatus} from "@/@types/credential";
+import {Dayjs} from "dayjs";
 
 type IdentifiableData = {
   name: string,
   lastname: string,
-  category: string
+  category: string,
+  expDate: Dayjs,
 }
 
 export default {

@@ -1,14 +1,19 @@
-import {SubmitHandler, useForm} from "react-hook-form";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {useCredentialMutation} from "@/hooks/mutations/credential";
 import {Box, Button, Grid, TextField} from "@mui/material";
 import {BaseSyntheticEvent, Dispatch, SetStateAction} from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import {useSnackbar} from "@/context/SnackbarContext";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {Dayjs} from "dayjs";
 
 type FormData = {
   [key: `${string}_${'firstName'}`]: string
   [key: `${string}_${'lastName'}`]: string
   [key: `${string}_${'licenseCategory'}`]: string
+  [key: `${string}_${'expirationDate'}`]: Dayjs
 }
 
 type CredentialFormType = {
@@ -19,7 +24,7 @@ type CredentialFormType = {
 }
 
 const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormType) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { control, register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const { manageCredential, isPending } = useCredentialMutation();
   const { showSnackbar } = useSnackbar();
 
@@ -31,6 +36,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
         name: values[`${id}_firstName`],
         lastname: values[`${id}_lastName`],
         category: values[`${id}_licenseCategory`],
+        expDate: values[`${id}_expirationDate`],
       }
     }, {
       onSuccess: (data) => {
@@ -87,6 +93,24 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
                 error={!!errors[`${id}_licenseCategory`]}
                 helperText={errors[`${id}_licenseCategory`] ? 'Este campo es obligatorio' : ''}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Controller
+                  name={`${id}_expirationDate`}
+                  control={control}
+                  render={({ field }) => (
+                    <DatePicker
+                      format="DD/MM/YYYY"
+                      label="Fecha de Expiración"
+                      {...field}
+                      value={field.value}
+                      onChange={(date) => field.onChange(date)}
+                      className="w-full"
+                    />
+                  )}
+                />
+              </LocalizationProvider>
             </Grid>
           </Grid>
           <Button variant="contained" className="!my-3 w-full" type="submit">Aprobar</Button>
