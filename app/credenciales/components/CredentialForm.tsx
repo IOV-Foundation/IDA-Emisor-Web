@@ -3,6 +3,7 @@ import {useCredentialMutation} from "@/hooks/mutations/credential";
 import {Box, Button, Grid, TextField} from "@mui/material";
 import {BaseSyntheticEvent, Dispatch, SetStateAction} from "react";
 import CircularProgress from '@mui/material/CircularProgress';
+import {useSnackbar} from "@/context/SnackbarContext";
 
 type FormData = {
   [key: `${string}_${'firstName'}`]: string
@@ -13,15 +14,16 @@ type FormData = {
 type CredentialFormType = {
   id: string
   showForm: boolean
-  setShowForm:  Dispatch<SetStateAction<boolean>>
+  setShowForm: Dispatch<SetStateAction<boolean>>
   schemaId: string
 }
 
 const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormType) => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const { manageCredential, isPending } = useCredentialMutation();
+  const { showSnackbar } = useSnackbar();
 
-  const acceptCredential: SubmitHandler<FormData> = (values: FormData, event:  BaseSyntheticEvent<object, any, any> | undefined) => {
+  const acceptCredential: SubmitHandler<FormData> = (values: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
     manageCredential({
       id,
       action: 'approve',
@@ -30,14 +32,29 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
         lastname: values[`${id}_lastName`],
         category: values[`${id}_licenseCategory`],
       }
-    })
+    }, {
+      onSuccess: (data) => {
+        console.log('AAAAA', data);
+        showSnackbar(data.message);
+      },
+      onError: () => {
+        showSnackbar("Failed to accept credential.");
+      }
+    });
   };
 
   const rejectCredential = () => {
     manageCredential({
       id,
       action: 'reject',
-    })
+    }, {
+      onSuccess: (data) => {
+        showSnackbar(data.message);
+      },
+      onError: () => {
+        showSnackbar("Failed to reject credential.");
+      }
+    });
   }
 
   return (
@@ -76,11 +93,11 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
           <Button variant="contained" className="!my-3 w-full" type="submit">Aprobar</Button>
         </Box>
       )}
-      {!showForm && !isPending &&<Button variant="contained" className="!mb-3 !bg-green-700" onClick={() => setShowForm(true)}>Aprobar</Button>}
+      {!showForm && !isPending && <Button variant="contained" className="!mb-3 !bg-green-700" onClick={() => setShowForm(true)}>Aprobar</Button>}
       {!isPending && <Button variant="contained" className="!bg-orange-700 hover:bg-grey-700" onClick={rejectCredential}>Rechazar</Button>}
-      {isPending && <CircularProgress sx={{margin: '0 auto'}} />}
+      {isPending && <CircularProgress sx={{ margin: '0 auto' }} />}
     </>
   );
 }
 
-export {CredentialForm}
+export { CredentialForm }
