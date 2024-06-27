@@ -34,7 +34,6 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
       }
     }, {
       onSuccess: (data) => {
-        console.log('AAAAA', data);
         showSnackbar(data.message);
       },
       onError: () => {
