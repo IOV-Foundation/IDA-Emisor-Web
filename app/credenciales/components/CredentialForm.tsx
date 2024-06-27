@@ -34,10 +34,10 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
       }
     }, {
       onSuccess: (data) => {
-        showSnackbar(data.message);
+        showSnackbar("La solicitud ha sido aprobada y se emitió la credencial verificable al usuario solicitante.");
       },
       onError: () => {
-        showSnackbar("Failed to accept credential.");
+        showSnackbar("No se pudo aceptar la credencial.");
       }
     });
   };
@@ -48,10 +48,10 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
       action: 'reject',
     }, {
       onSuccess: (data) => {
-        showSnackbar(data.message);
+        showSnackbar("La solicitud ha sido rechazada. El usuario verá este estado en la solicitud realizada.");
       },
       onError: () => {
-        showSnackbar("Failed to reject credential.");
+        showSnackbar("No se pudo rechazar la credencial.");
       }
     });
   }
