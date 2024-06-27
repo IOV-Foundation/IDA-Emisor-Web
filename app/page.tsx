@@ -33,9 +33,9 @@ export default function Home() {
                   height={56}
                   priority
                 />
-                <div className="border-l-4 border-[#FFFFFF] pl-3 ml-3">
-                  <h1 className="text-2xl font-bold text-[#FFFFFF]">DEMO - Portal de Gobierno</h1>
-                  <h2 className="text-xl text-[#FFFFFF]">Gestión de Licencias de Conducir</h2>
+                <div className="border-l-4 border-white pl-3 ml-3">
+                  <h1 className="text-2xl font-bold text-white">DEMO - Portal Emisor</h1>
+                  <h2 className="text-xl text-white">Licencias de Conducir</h2>
                 </div>
               </div>
             </div>
