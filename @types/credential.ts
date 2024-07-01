@@ -10,4 +10,5 @@ export type RequestCredential = {
   schema_id: string
   status: CredentialStatus
   subject_did: string
+  created_at: string
 }

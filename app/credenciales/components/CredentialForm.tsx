@@ -36,8 +36,8 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
         name: values[`${id}_firstName`],
         lastname: values[`${id}_lastName`],
         category: values[`${id}_licenseCategory`],
-        expDate: values[`${id}_expirationDate`],
-      }
+      },
+      exp_date: values[`${id}_expirationDate`],
     }, {
       onSuccess: (data) => {
         showSnackbar("La solicitud ha sido aprobada y se emitió la credencial verificable al usuario solicitante.");

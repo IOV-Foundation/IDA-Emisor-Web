@@ -16,6 +16,7 @@ import {useCredentialsQuery} from "@/hooks/queries/credentials";
 import {CredentialStatus, RequestCredential} from "@/@types/credential";
 import {CredentialForm} from "@/app/credenciales/components/CredentialForm";
 import Image from "next/image";
+import dayjs from "dayjs";
 
 const STATUSES = {
   [CredentialStatus.pending]: 'Pendiente',
@@ -49,7 +50,7 @@ export default function CredentialsList() {
         </Select>
       </FormControl>
       {credentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
-      {credentials?.map(({ id, status, document_url, schema_id }: RequestCredential, index: number) => (
+      {credentials?.map(({ id, status, document_url, schema_id, created_at }: RequestCredential, index: number) => (
         <Accordion className="mb-3" key={id}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
@@ -61,6 +62,9 @@ export default function CredentialsList() {
           <AccordionDetails className="flex flex-col max-w-xl">
             <Typography variant="h6">
               Estado: {STATUSES[status]}
+            </Typography>
+            <Typography variant="h6">
+              Creado en: {dayjs(created_at).format('DD/MM/YYYY')}
             </Typography>
             <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4" />
             {status === CredentialStatus.pending && <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />}
