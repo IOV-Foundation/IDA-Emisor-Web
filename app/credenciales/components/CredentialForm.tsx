@@ -48,8 +48,6 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
     });
   };
 
-  console.log('err', errors)
-
   const rejectCredential = () => {
     manageCredential({
       id,
