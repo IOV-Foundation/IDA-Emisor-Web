@@ -36,8 +36,8 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
         name: values[`${id}_firstName`],
         lastname: values[`${id}_lastName`],
         category: values[`${id}_licenseCategory`],
-        expDate: values[`${id}_expirationDate`],
-      }
+      },
+      exp_date: values[`${id}_expirationDate`],
     }, {
       onSuccess: (data) => {
         showSnackbar("La solicitud ha sido aprobada y se emitió la credencial verificable al usuario solicitante.");
@@ -71,7 +71,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
               <TextField
                 fullWidth
                 label="Nombre"
-                {...register(`${id}_firstName`)}
+                {...register(`${id}_firstName`, {required: true})}
                 error={!!errors[`${id}_firstName`]}
                 helperText={errors[`${id}_firstName`] ? 'Este campo es obligatorio' : ''}
               />
@@ -80,7 +80,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
               <TextField
                 fullWidth
                 label="Apellido"
-                {...register(`${id}_lastName`)}
+                {...register(`${id}_lastName`, {required: true})}
                 error={!!errors[`${id}_lastName`]}
                 helperText={errors[`${id}_lastName`] ? 'Este campo es obligatorio' : ''}
               />
@@ -89,7 +89,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
               <TextField
                 fullWidth
                 label="Categoría"
-                {...register(`${id}_licenseCategory`)}
+                {...register(`${id}_licenseCategory`, {required: true})}
                 error={!!errors[`${id}_licenseCategory`]}
                 helperText={errors[`${id}_licenseCategory`] ? 'Este campo es obligatorio' : ''}
               />
@@ -97,6 +97,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Controller
+                  rules={{required: {value: true, message: 'Este campo es obligatorio'}}}
                   name={`${id}_expirationDate`}
                   control={control}
                   render={({ field }) => (
@@ -104,9 +105,16 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
                       format="DD/MM/YYYY"
                       label="Fecha de Expiración"
                       {...field}
+                      inputRef={field.ref}
                       value={field.value}
                       onChange={(date) => field.onChange(date)}
                       className="w-full"
+                      slotProps={{
+                        textField: {
+                          error: !!errors[`${id}_expirationDate`],
+                          helperText: errors[`${id}_expirationDate`]?.message,
+                        },
+                      }}
                     />
                   )}
                 />
