@@ -2,7 +2,7 @@
 import {useState} from "react";
 import Image from "next/image";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import CredentialsForm from "@/app/credenciales/components/CredentialsList";
+import CredentialsList from "@/app/credenciales/components/CredentialsList";
 import {SnackbarProvider} from "@/context/SnackbarContext";
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
           </header>
           <div className="w-full px-4 sm:px-6 lg:px-8">
             <h2 className="text-xl font-semibold text-gray-700 mt-4 mb-6">Listado de Licencias de Conducir pendientes de revisar</h2>
-            <CredentialsForm />
+            <CredentialsList />
           </div>
           </main>
           <footer className="w-full bg-gray-500 text-white py-4 flex justify-center items-center">
