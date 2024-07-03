@@ -50,14 +50,14 @@ export default function CredentialsList() {
         </Select>
       </FormControl>
       {credentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
-      {credentials?.map(({ id, status, document_url, schema_id, created_at }: RequestCredential, index: number) => (
+      {credentials?.map(({ id, status, document_url, schema_id, created_at, code }: RequestCredential, index: number) => (
         <Accordion className="mb-3" key={id}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls="panel2-content"
             id="panel2-header"
           >
-            <Typography>Solicitud de Credencial #{index + 1}</Typography>
+            <Typography>Solicitud de Credencial #{code}</Typography>
           </AccordionSummary>
           <AccordionDetails className="flex flex-col max-w-xl">
             <Typography variant="h6">
