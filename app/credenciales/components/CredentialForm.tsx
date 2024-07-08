@@ -1,6 +1,6 @@
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {useCredentialMutation} from "@/hooks/mutations/credential";
-import {Box, Button, Grid, TextField} from "@mui/material";
+import {Box, Button, Grid, MenuItem, TextField} from "@mui/material";
 import {BaseSyntheticEvent, Dispatch, SetStateAction} from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import {useSnackbar} from "@/context/SnackbarContext";
@@ -21,6 +21,18 @@ type CredentialFormType = {
   showForm: boolean
   setShowForm: Dispatch<SetStateAction<boolean>>
   schemaId: string
+}
+
+const textValidation = {
+  required: 'Este campo es obligatorio',
+  pattern: {
+    value: /^[A-Za-z\s]+$/,
+    message: 'Solo se permiten letras y espacios',
+  },
+  maxLength: {
+    value: 40,
+    message: 'No puede exceder los 40 caracteres',
+  },
 }
 
 const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormType) => {
@@ -71,28 +83,34 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
               <TextField
                 fullWidth
                 label="Nombre"
-                {...register(`${id}_firstName`, {required: true})}
+                {...register(`${id}_firstName`, textValidation)}
                 error={!!errors[`${id}_firstName`]}
-                helperText={errors[`${id}_firstName`] ? 'Este campo es obligatorio' : ''}
+                helperText={errors[`${id}_firstName`] ? errors[`${id}_firstName`]?.message : ''}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Apellido"
-                {...register(`${id}_lastName`, {required: true})}
+                {...register(`${id}_lastName`, textValidation)}
                 error={!!errors[`${id}_lastName`]}
-                helperText={errors[`${id}_lastName`] ? 'Este campo es obligatorio' : ''}
+                helperText={errors[`${id}_lastName`] ? errors[`${id}_lastName`]?.message : ''}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                select
                 label="Categoría"
-                {...register(`${id}_licenseCategory`, {required: true})}
+                {...register(`${id}_licenseCategory`, { required: 'Este campo es obligatorio' })}
                 error={!!errors[`${id}_licenseCategory`]}
-                helperText={errors[`${id}_licenseCategory`] ? 'Este campo es obligatorio' : ''}
-              />
+                helperText={errors[`${id}_licenseCategory`] ? errors[`${id}_licenseCategory`]?.message : ''}
+              >
+                <MenuItem value="Ciclomotores y motocicletas">Ciclomotores y motocicletas</MenuItem>
+                <MenuItem value="Automóviles">Automóviles</MenuItem>
+                <MenuItem value="Camiones">Camiones</MenuItem>
+                <MenuItem value="Automóviles para transporte de pasajeros">Automóviles para transporte de pasajeros</MenuItem>
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
