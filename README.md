@@ -1,3 +1,7 @@
+# Welcome to IDA 👋
+
+"IDA" is a Self-Sovereign Identity (SSI) application designed to enable citizens to manage and present their digital credentials securely and autonomously, without the need for internet connectivity for validation. This application is part of a broader system aimed at demonstrating the potential and practicality of SSI technology in real-world situations.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
