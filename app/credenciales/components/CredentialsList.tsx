@@ -33,6 +33,9 @@ export default function CredentialsList() {
     setSelectedStatus(event.target.value as CredentialStatus);
   };
 
+  const sortedCredentials = credentials?.slice().sort((a, b) => dayjs(b.created_at).valueOf() - dayjs(a.created_at).valueOf());
+
+
   return (
     <>
       <FormControl fullWidth className="flex mb-10" variant="outlined" margin="normal">
@@ -49,8 +52,8 @@ export default function CredentialsList() {
           <MenuItem value={CredentialStatus.rejected}>{STATUSES[CredentialStatus.rejected]}</MenuItem>
         </Select>
       </FormControl>
-      {credentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
-      {credentials?.map(({ id, status, document_url, schema_id, created_at, code }: RequestCredential, index: number) => (
+      {sortedCredentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
+      {sortedCredentials?.map(({ id, status, document_url, schema_id, created_at, code }: RequestCredential, index: number) => (
         <Accordion className="mb-3" key={id}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}

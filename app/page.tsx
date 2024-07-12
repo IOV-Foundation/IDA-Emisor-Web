@@ -35,13 +35,13 @@ export default function Home() {
                 />
                 <div className="border-l-4 border-white pl-3 ml-3">
                   <h1 className="text-2xl font-bold text-white">DEMO - Portal Emisor</h1>
-                  <h2 className="text-xl text-white">Licencias de Conducir</h2>
+                  <h2 className="text-xl text-white">Gestión de Credenciales Verificables</h2>
                 </div>
               </div>
             </div>
           </header>
           <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-xl font-semibold text-gray-700 mt-4 mb-6">Listado de Licencias de Conducir pendientes de revisar</h2>
+            <h2 className="text-xl font-semibold text-gray-700 mt-4 mb-6">Listado de Solicitudes</h2>
             <CredentialsList />
           </div>
           </main>
