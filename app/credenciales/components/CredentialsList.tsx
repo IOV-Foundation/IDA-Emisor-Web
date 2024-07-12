@@ -33,7 +33,9 @@ export default function CredentialsList() {
   };
 
   // Sort credentials by date from newest to oldest
-  const sortedCredentials = credentials?.sort((a, b) => dayjs(b.created_at).unix() - dayjs(a.created_at).unix());
+  const sortedCredentials = credentials?.sort((a: RequestCredential, b: RequestCredential) => 
+    dayjs(b.created_at).unix() - dayjs(a.created_at).unix()
+  );
 
   return (
     <>
