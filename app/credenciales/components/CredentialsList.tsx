@@ -33,13 +33,12 @@ export default function CredentialsList() {
     setSelectedStatus(event.target.value as CredentialStatus);
   };
 
-  const sortedCredentials = credentials?.slice().sort((a, b) => dayjs(b.created_at).valueOf() - dayjs(a.created_at).valueOf());
-
+  const sortedCredentials = credentials?.slice().sort((a: RequestCredential, b: RequestCredential) => dayjs(b.created_at).valueOf() - dayjs(a.created_at).valueOf());
 
   return (
     <>
       <FormControl fullWidth className="flex mb-10" variant="outlined" margin="normal">
-        <InputLabel id="status-filter-label">Filter by Status</InputLabel>
+        <InputLabel id="status-filter-label">Filtrar por estado</InputLabel>
         <Select
           className="w-52"
           labelId="status-filter-label"
@@ -60,7 +59,7 @@ export default function CredentialsList() {
             aria-controls="panel2-content"
             id="panel2-header"
           >
-            <Typography>Solicitud de Credencial #{code}</Typography>
+            <Typography>{dayjs(created_at).format('DD/MM/YYYY')} - #{code} - Lic. de Conducir</Typography>
           </AccordionSummary>
           <AccordionDetails className="flex flex-col max-w-xl">
             <Typography variant="h6">
