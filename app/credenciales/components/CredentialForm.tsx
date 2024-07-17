@@ -54,8 +54,10 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
       onSuccess: (data) => {
         showSnackbar("La solicitud ha sido aprobada y se emitió la credencial verificable al usuario solicitante.");
       },
-      onError: () => {
-        showSnackbar("No se pudo aceptar la credencial.");
+      onError: (error) => {
+        if (typeof error === "string") {
+          showSnackbar(error);
+        }
       }
     });
   };

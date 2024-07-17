@@ -10,12 +10,13 @@ import {
   Typography
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useCredentialsQuery} from "@/hooks/queries/credentials";
 import {CredentialStatus, RequestCredential} from "@/@types/credential";
 import {CredentialForm} from "@/app/credenciales/components/CredentialForm";
 import Image from "next/image";
 import dayjs from "dayjs";
+import {useSnackbar} from "@/context/SnackbarContext";
 
 const STATUSES = {
   [CredentialStatus.pending]: 'Pendiente',
@@ -25,15 +26,22 @@ const STATUSES = {
 
 export default function CredentialsList() {
   const [selectedStatus, setSelectedStatus] = useState<CredentialStatus>(CredentialStatus.pending);
-  const { credentials } = useCredentialsQuery({status: selectedStatus});
+  const { credentials, error } = useCredentialsQuery({status: selectedStatus});
   const [showForm, setShowForm] = useState(false);
+  const { showSnackbar } = useSnackbar();
+  
+  useEffect(() => {
+    if (error && typeof error === 'string') {
+      showSnackbar(error);
+    }
+  }, [error]);
 
   const handleStatusChange = (event: SelectChangeEvent<string>) => {
     setSelectedStatus(event.target.value as CredentialStatus);
   };
 
   // Sort credentials by date from newest to oldest
-  const sortedCredentials = credentials?.sort((a: RequestCredential, b: RequestCredential) => 
+  const sortedCredentials = credentials?.sort((a: RequestCredential, b: RequestCredential) =>
     dayjs(b.created_at).unix() - dayjs(a.created_at).unix()
   );
 
