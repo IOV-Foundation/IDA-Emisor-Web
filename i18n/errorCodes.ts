@@ -22,7 +22,7 @@ const errorCodes: ErrorCodes = {
   },
   500: {
     en: 'Internal server error',
-    es: 'Internal server error',
+    es: 'Error interno del servidor',
   },
 };
 
