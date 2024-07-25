@@ -36,7 +36,7 @@ const textValidation = {
 }
 
 const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormType) => {
-  const { control, register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { control, register, handleSubmit, formState: { errors , isValid} } = useForm<FormData>();
   const { manageCredential, isPending } = useCredentialMutation();
   const { showSnackbar } = useSnackbar();
 
@@ -141,7 +141,7 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
               </LocalizationProvider>
             </Grid>
           </Grid>
-          <Button variant="contained" className="!my-3 w-full" type="submit">Aprobar</Button>
+          <Button variant="contained" className="!my-3 w-full" type="submit" disabled={!isValid}>Aprobar</Button>
         </Box>
       )}
       {!showForm && !isPending && <Button variant="contained" className="!mb-3 !bg-green-700" onClick={() => setShowForm(true)}>Aprobar</Button>}
