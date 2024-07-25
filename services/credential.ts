@@ -1,5 +1,5 @@
 import axios from './axios';
-import {CredentialStatus} from "@/@types/credential";
+import {CredentialSchemaId, CredentialStatus} from "@/@types/credential";
 import {Dayjs} from "dayjs";
 
 type IdentifiableData = {
@@ -9,13 +9,14 @@ type IdentifiableData = {
 }
 
 export default {
-  getCredentials: async (status: CredentialStatus) => {
+  getCredentials: async (status: CredentialStatus, schema_id: CredentialSchemaId) => {
     try {
       const response = await axios.get(
         '/requests',
         {
           params: {
-            status
+            status,
+            schema_id
           }
         }
       );
