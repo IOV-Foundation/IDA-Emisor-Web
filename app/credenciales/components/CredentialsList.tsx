@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,7 +13,7 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {useEffect, useState} from "react";
 import {useCredentialsQuery} from "@/hooks/queries/credentials";
-import {CredentialStatus, RequestCredential} from "@/@types/credential";
+import {CredentialSchemaId, CredentialStatus, RequestCredential} from "@/@types/credential";
 import {CredentialForm} from "@/app/credenciales/components/CredentialForm";
 import Image from "next/image";
 import dayjs from "dayjs";
@@ -24,12 +25,17 @@ const STATUSES = {
   [CredentialStatus.rejected]: 'Rechazada',
 }
 
+const Schemas = {
+  [CredentialSchemaId.drivers_license]: 'Driver license'
+}
+
 export default function CredentialsList() {
   const [selectedStatus, setSelectedStatus] = useState<CredentialStatus>(CredentialStatus.pending);
-  const { credentials, error } = useCredentialsQuery({status: selectedStatus});
+  const [selectedSchemaId, setSelectedSchemaId] = useState<CredentialSchemaId>(CredentialSchemaId.drivers_license);
+  const { credentials, error } = useCredentialsQuery({status: selectedStatus, schema_id: selectedSchemaId});
   const [showForm, setShowForm] = useState(false);
   const { showSnackbar } = useSnackbar();
-  
+
   useEffect(() => {
     if (error && typeof error === 'string') {
       showSnackbar(error);
@@ -40,6 +46,10 @@ export default function CredentialsList() {
     setSelectedStatus(event.target.value as CredentialStatus);
   };
 
+  const handleSchemaIdChange = (event: SelectChangeEvent<string>) => {
+    setSelectedSchemaId(event.target.value as CredentialSchemaId)
+  }
+
   // Sort credentials by date from newest to oldest
   const sortedCredentials = credentials?.sort((a: RequestCredential, b: RequestCredential) =>
     dayjs(b.created_at).unix() - dayjs(a.created_at).unix()
@@ -47,20 +57,34 @@ export default function CredentialsList() {
 
   return (
     <>
-      <FormControl fullWidth className="flex mb-10" variant="outlined" margin="normal">
-        <InputLabel id="status-filter-label">Filter by Status</InputLabel>
-        <Select
-          className="w-52"
-          labelId="status-filter-label"
-          value={selectedStatus}
-          onChange={handleStatusChange}
-          label="Filtrar por estado"
-        >
-          <MenuItem value={CredentialStatus.pending}>{STATUSES[CredentialStatus.pending]}</MenuItem>
-          <MenuItem value={CredentialStatus.approved}>{STATUSES[CredentialStatus.approved]}</MenuItem>
-          <MenuItem value={CredentialStatus.rejected}>{STATUSES[CredentialStatus.rejected]}</MenuItem>
-        </Select>
-      </FormControl>
+      <Box sx={{ display: "grid", gridTemplateColumns: '250px 250px' }}>
+        <FormControl fullWidth className="flex mb-10" variant="outlined" margin="normal">
+          <InputLabel id="status-filter-label">Filtrar por Estado</InputLabel>
+          <Select
+            className="w-52"
+            labelId="status-filter-label"
+            value={selectedStatus}
+            onChange={handleStatusChange}
+            label="Filtrar por estado"
+          >
+            <MenuItem value={CredentialStatus.pending}>{STATUSES[CredentialStatus.pending]}</MenuItem>
+            <MenuItem value={CredentialStatus.approved}>{STATUSES[CredentialStatus.approved]}</MenuItem>
+            <MenuItem value={CredentialStatus.rejected}>{STATUSES[CredentialStatus.rejected]}</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth className="flex mb-10" variant="outlined" margin="normal">
+          <InputLabel id="type-filter-label">Filtrar por Tipo</InputLabel>
+          <Select
+            className="w-52"
+            labelId="type-filter-label"
+            value={selectedSchemaId}
+            onChange={handleSchemaIdChange}
+            label="Filtrar por tipo"
+          >
+            <MenuItem value={CredentialSchemaId.drivers_license}>{Schemas[CredentialSchemaId.drivers_license]}</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       {sortedCredentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
       {sortedCredentials?.map(({ id, status, document_url, schema_id, created_at, code }: RequestCredential, index: number) => (
         <Accordion className="mb-3" key={id}>
