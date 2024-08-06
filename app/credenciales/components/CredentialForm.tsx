@@ -144,8 +144,8 @@ const CredentialForm = ({ id, showForm, setShowForm, schemaId }: CredentialFormT
           <Button variant="contained" className="!my-3 w-full" type="submit" disabled={!isValid}>Aprobar</Button>
         </Box>
       )}
-      {!showForm && !isPending && <Button variant="contained" className="!mb-3 !bg-green-700" onClick={() => setShowForm(true)}>Aprobar</Button>}
-      {!isPending && <Button variant="contained" className="!bg-orange-700 hover:bg-grey-700" onClick={rejectCredential}>Rechazar</Button>}
+      {!showForm && !isPending && <Button variant="contained" className="w-full mb-2 !bg-green-700" onClick={() => setShowForm(true)}>Aprobar</Button>}
+      {!isPending && <Button variant="contained" className="w-full !bg-orange-700 hover:bg-grey-700" onClick={rejectCredential}>Rechazar</Button>}
       {isPending && <CircularProgress sx={{ margin: '0 auto' }} />}
     </>
   );
