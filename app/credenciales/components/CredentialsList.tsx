@@ -1,16 +1,23 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
+  Collapse,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   SelectChangeEvent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
   Typography
 } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import {KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
 import {useEffect, useState} from "react";
 import {useCredentialsQuery} from "@/hooks/queries/credentials";
 import {CredentialSchemaId, CredentialStatus, RequestCredential} from "@/@types/credential";
@@ -23,18 +30,49 @@ const STATUSES = {
   [CredentialStatus.pending]: 'Pendiente',
   [CredentialStatus.approved]: 'Aprobada',
   [CredentialStatus.rejected]: 'Rechazada',
-}
+};
 
 const Schemas = {
   [CredentialSchemaId.drivers_license]: 'Driver license'
+};
+
+function Row({ credential }: { credential: RequestCredential }) {
+  const [open, setOpen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  return (
+    <>
+      <TableRow>
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          </IconButton>
+        </TableCell>
+        <TableCell>{dayjs(credential.created_at).format('DD/MM/YYYY')}</TableCell>
+        <TableCell>{`#${credential.code}`}</TableCell>
+        <TableCell>{STATUSES[credential.status]}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+              <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${credential.document_url}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4" />
+              {credential.status === CredentialStatus.pending && <CredentialForm id={credential.id} schemaId={credential.schema_id} showForm={showForm} setShowForm={setShowForm} />}
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </>
+  );
 }
 
 export default function CredentialsList() {
   const [selectedStatus, setSelectedStatus] = useState<CredentialStatus>(CredentialStatus.pending);
   const [selectedSchemaId, setSelectedSchemaId] = useState<CredentialSchemaId>(CredentialSchemaId.drivers_license);
-  const { credentials, error } = useCredentialsQuery({status: selectedStatus, schema_id: selectedSchemaId});
-  const [showForm, setShowForm] = useState(false);
+  const { credentials, error } = useCredentialsQuery({ status: selectedStatus, schema_id: selectedSchemaId });
   const { showSnackbar } = useSnackbar();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     if (error && typeof error === 'string') {
@@ -47,13 +85,23 @@ export default function CredentialsList() {
   };
 
   const handleSchemaIdChange = (event: SelectChangeEvent<string>) => {
-    setSelectedSchemaId(event.target.value as CredentialSchemaId)
-  }
+    setSelectedSchemaId(event.target.value as CredentialSchemaId);
+  };
 
-  // Sort credentials by date from newest to oldest
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   const sortedCredentials = credentials?.sort((a: RequestCredential, b: RequestCredential) =>
     dayjs(b.created_at).unix() - dayjs(a.created_at).unix()
   );
+
+  const paginatedCredentials = sortedCredentials?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <>
@@ -86,27 +134,32 @@ export default function CredentialsList() {
         </FormControl>
       </Box>
       {sortedCredentials?.length === 0 && <Typography variant="h5" className="text-black">No se encontraron credenciales.</Typography>}
-      {sortedCredentials?.map(({ id, status, document_url, schema_id, created_at, code }: RequestCredential, index: number) => (
-        <Accordion className="mb-3" key={id}>
-          <AccordionSummary
-            expandIcon={<ArrowDropDownIcon />}
-            aria-controls="panel2-content"
-            id="panel2-header"
-          >
-            <Typography>{dayjs(created_at).format('DD/MM/YYYY')} - Solicitud de Credencial #{code}</Typography>
-          </AccordionSummary>
-          <AccordionDetails className="flex flex-col max-w-xl">
-            <Typography variant="h6">
-              Estado: {STATUSES[status]}
-            </Typography>
-            <Typography variant="h6">
-              Creado en: {dayjs(created_at).format('DD/MM/YYYY')}
-            </Typography>
-            <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4" />
-            {status === CredentialStatus.pending && <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />}
-          </AccordionDetails>
-        </Accordion>
-      ))}
+      <TableContainer component={Paper} className="mb-5">
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Creado en</TableCell>
+              <TableCell>Solicitud de Credencial</TableCell>
+              <TableCell>Estado</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedCredentials?.map((credential: RequestCredential) => (
+              <Row key={credential.id} credential={credential} />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={sortedCredentials?.length || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
     </>
   );
 }
