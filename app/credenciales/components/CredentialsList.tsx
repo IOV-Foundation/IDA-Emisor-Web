@@ -2,6 +2,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -33,7 +35,23 @@ export default function CredentialsList() {
   };
 
   if (isLoading) {
-    return <Typography variant="h5" className="text-black">Loading...</Typography>;
+    return (
+      <Box 
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <CircularProgress sx={{ marginBottom: 2 }} />
+        <Typography variant="h5" sx={{ color: 'blue', marginTop: 2 }}>
+          Loading...
+        </Typography>
+      </Box>
+    );
+  
   }
 
   if (isError) {
