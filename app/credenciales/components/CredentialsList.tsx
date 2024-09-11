@@ -25,12 +25,20 @@ const STATUSES = {
 
 export default function CredentialsList() {
   const [selectedStatus, setSelectedStatus] = useState<CredentialStatus>(CredentialStatus.pending);
-  const { credentials } = useCredentialsQuery({status: selectedStatus});
+  const { credentials, isLoading, isError, error } = useCredentialsQuery({status: selectedStatus});
   const [showForm, setShowForm] = useState(false);
 
   const handleStatusChange = (event: SelectChangeEvent<string>) => {
     setSelectedStatus(event.target.value as CredentialStatus);
   };
+
+  if (isLoading) {
+    return <Typography variant="h5" className="text-black">Loading...</Typography>;
+  }
+
+  if (isError) {
+    return <Typography variant="h5" className="text-red-500">Error: {error.message}</Typography>;
+  }
 
   // Sort credentials by date from newest to oldest
   const sortedCredentials = credentials?.sort((a: RequestCredential, b: RequestCredential) => 
