@@ -25,6 +25,8 @@ const STATUSES = {
   [CredentialStatus.rejected]: 'Rechazada',
 }
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function CredentialsList() {
   const [selectedStatus, setSelectedStatus] = useState<CredentialStatus>(CredentialStatus.pending);
   const { credentials, isLoading, isError, error } = useCredentialsQuery({status: selectedStatus});
@@ -96,7 +98,7 @@ export default function CredentialsList() {
             <Typography variant="h6">
               Creado en: {dayjs(created_at).format('DD/MM/YYYY')}
             </Typography>
-            <Image src={`https://identity-api.mangofield-2f4eea69.brazilsouth.azurecontainerapps.io/${document_url}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4" />
+            <Image src={`${apiBaseUrl}/${document_url.replace(/^\//, '')}`} width={500} height={320} alt="Imagen de la prueba de identidad" className="my-4" />
             {status === CredentialStatus.pending && <CredentialForm id={id} schemaId={schema_id} showForm={showForm} setShowForm={setShowForm} />}
           </AccordionDetails>
         </Accordion>
